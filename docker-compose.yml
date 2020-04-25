@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  user_db:
+  user_db: # TODO: durable data
     container_name: bodhi_user_db
     image: postgres:9-alpine
     working_dir: "/app"
@@ -23,6 +23,28 @@ services:
       - "3030:3000"
     networks:
       - app-network
+  clinic_db: # TODO: durable data
+    container_name: bodhi_clinic_db
+    image: mongo:3-xenial
+    env_file: "${stage}.env"
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+  clinic_cache:
+    container_name: bodhi_clinic_cache
+    image: redis:rc-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  all:
+    image: scratch
+    depends_on:
+      - "user_db"
+      - "user_service"
+      - "clinic_db"
+      - "clinic_cache"
 networks:
   app-network:
     driver: bridge
