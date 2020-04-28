@@ -38,13 +38,6 @@ services:
       - "6379:6379"
     networks:
       - app-network
-  all:
-    image: scratch
-    depends_on:
-      - "user_db"
-      - "user_service"
-      - "clinic_db"
-      - "clinic_cache"
 networks:
   app-network:
     driver: bridge
