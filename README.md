@@ -62,3 +62,15 @@ $ minikube stop
 ```
 psql -h 172.17.0.2 -U gitlab -p 30007 -d gitlabhq_production
 ```
+
+Questions:
+### how did you find the host/port?
+```
+$ minikube service postgresql
+|-----------|------------|-------------|-------------------------|
+| NAMESPACE |    NAME    | TARGET PORT |           URL           |
+|-----------|------------|-------------|-------------------------|
+| default   | postgresql | http/5432   | http://172.17.0.2:30007 |
+|-----------|------------|-------------|-------------------------|
+* Opening service default/postgresql in default browser...
+```
