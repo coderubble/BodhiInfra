@@ -19,11 +19,18 @@ Guest Port:22
 $ VBoxManage startvm debian --type headless
 ```
 ## ssh into VM
+In Vbox make sure HostNetworkManager has DHCP created and enabled. Then in the VM instance Network>
+use the following settings
+Bridge Adapter,wlp2s0,Intel PRO/1000 MT Desktop(8254EM),Allow all,Cable Connected
+
+#### Install ifconfig and view IP (192.168.1.14 in this case)
 ```
-$ ssh c@127.0.0.1 -p 2222
+$ sudo apt install net-tools -y
+$ /sbin/ifconfig 
 ```
-```Note:``` the above if it is a Bridge Adapter will get a ip you can access from host.
+#### ssh
 ```
+$ ssh c@192.168.1.14 -p 22
 $ su 
 $ apt-get install sudo
 $ /usr/sbin/adduser c sudo
@@ -99,13 +106,11 @@ Host 127.0.0.1
     NumberOfPasswordPrompts 3
 ```
 ### IP Forwarding
-#### Install ifconfig
-```
-$ sudo apt install net-tools -y
-$ /sbin/ifconfig 
 ```
 #### set a static ip
-$ /sbin/ifconfig 
+```
+$ /sbin/ifconfig
+```
 #### above will provide a static ip
 ```
 $ sudo vim /etc/sysctl.conf
