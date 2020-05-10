@@ -28,7 +28,8 @@ Bridge Adapter,wlp2s0,Intel PRO/1000 MT Desktop(8254EM),Allow all,Cable Connecte
 $ sudo apt install net-tools -y
 $ /sbin/ifconfig 
 ```
-#### ssh
+
+#### SSH
 ```
 $ ssh c@192.168.1.14 -p 22
 $ su 
