@@ -120,6 +120,30 @@ Host 127.0.0.1
 
 ### add entry into iptables for prerouting
 ```
-$ sudo iptables -t nat -A PREROUTING -p tcp -d 192.168.1.109 --dport 8888 -j DNAT --to 172.17.0.2:32000
+$ sudo iptables -t nat -A PREROUTING -p tcp -d 192.168.1.109 --dport 8888 -j DNAT --to 172.17.0.3:32000
 ```
 http://172.17.0.2:32000/
+
+# Troubleshooting
+
+```Template parsing error: template: :1:8: executing "" at <.State.Status>: map has no entry for key "State"```
+```
+c@debian:~$ minikube delete -all
+Error: unknown shorthand flag: 'a' in -all
+See 'minikube delete --help' for usage.
+c@debian:~$ minikube delete --all
+🔥  Deleting "minikube" in docker ...
+💀  Removed all traces of the "minikube" cluster.
+🔥  Successfully deleted all profiles
+
+c@debian:~$ minikube start --driver=docker
+😄  minikube v1.10.1 on Debian 10.4 (vbox/amd64)
+✨  Using the docker driver based on user configuration
+👍  Starting control plane node minikube in cluster minikube
+🔥  Creating docker container (CPUs=2, Memory=2200MB) ...
+🐳  Preparing Kubernetes v1.18.2 on Docker 19.03.2 ...
+    ▪ kubeadm.pod-network-cidr=10.244.0.0/16
+🔎  Verifying Kubernetes components...
+🌟  Enabled addons: default-storageclass, storage-provisioner
+🏄  Done! kubectl is now configured to use "minikube"
+```

@@ -5,11 +5,10 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: bodhi-service
+    app: bodhi-service-deployment
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 3000
       nodePort: 32000
 ---
 apiVersion: apps/v1
