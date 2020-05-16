@@ -6,32 +6,37 @@ docker-compose up -f bodhi-doc.yml -d user_db clinic_db clinic_cache
 
 # Kube
 ## Setting up minikube on a VirtualBox VM.
+install debian stable
 
-* install debian stable 
-* in the virtual box under Networking change Network Adapter 1 to NAT
-Under Port fowarding:
-name: SSH
-Protocol: TCP
-Host Port 2222
-Guest Port:22
-## Starting VM 
-```
-$ VBoxManage startvm debian --type headless
-```
-## ssh into VM
+## before ssh into VM
 In Vbox make sure HostNetworkManager has DHCP created and enabled. Then in the VM instance Network>
 use the following settings
-Bridge Adapter,wlp2s0,Intel PRO/1000 MT Desktop(8254EM),Allow all,Cable Connected
+```Bridge Adapter```
+,wlp2s0,Intel PRO/1000 MT Desktop(8254EM),Allow all,Cable Connected
 
-#### Install ifconfig and view IP (192.168.1.14 in this case)
+### IP Forwarding
+#### ifconfig to see ip details
 ```
 $ sudo apt install net-tools -y
 $ /sbin/ifconfig 
 ```
 
+#### enable ip fwding.
+```
+$ sudo vim /etc/sysctl.conf
+```
+and uncomment line ``` net.ipv4.ip_forward=1```, then to reboot.
+```
+$ sudo reboot.
+```
+
+## Starting VM 
+```
+$ VBoxManage startvm debian --type headless
+```
 #### SSH
 ```
-$ ssh c@192.168.1.14 -p 22
+$ ssh c@<ip>
 $ su 
 $ apt-get install sudo
 $ /usr/sbin/adduser c sudo
@@ -58,9 +63,15 @@ $ sudo apt install docker.io
 $ sudo systemctl start docker
 $ sudo systemctl enable docker
 $ sudo groupadd docker
+$ sudo su
 $ newgrp docker 
 $ sudo usermod -aG docker $USER
 ```
+restart the container.
+```
+$ docker ps
+```
+must work without sudo.
 
 ## starting minikube
 ```
@@ -106,19 +117,9 @@ Host 127.0.0.1
     PasswordAuthentication yes
     NumberOfPasswordPrompts 3
 ```
-### IP Forwarding
-```
-#### set a static ip
-```
-$ /sbin/ifconfig
-```
-#### above will provide a static ip
-```
-$ sudo vim /etc/sysctl.conf
-```
-and uncomment net.ipv4.ip_forward=1
-```Note:``` you may need to restart.
+
 ### add entry into iptables for prerouting
 ```
-$ sudo iptables -t nat -A PREROUTING -p tcp -d 192.168.0.104 --dport 8888 -j DNAT --to 172.17.0.2:30008
+$ sudo iptables -t nat -A PREROUTING -p tcp -d 192.168.1.109 --dport 8888 -j DNAT --to 172.17.0.2:32000
 ```
+http://172.17.0.2:32000/
